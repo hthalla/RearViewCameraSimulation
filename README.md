@@ -8,8 +8,8 @@
 * yaml
 
 ### Assumptions:
-* The world coordinate frame is exactly aligned with the camera frame.
-* The camera using which the video has been captures doesn't have any radial or tangential distortion.
+* The world coordinate frame perfectly aligns with the camera frame.
+* The camera using which the video has been captured doesn't have any radial or tangential distortion.
 
 ### File to run:
 sim.py: This is the main file which performs the simulation by taking the following user inputs while runtime. The simulation is a linear change in the steering wheel from zero degrees to the user input angle in degrees.
