@@ -35,7 +35,7 @@ if __name__ == "__main__":
     heading = int(input("Enter the turn you wish to take (left:1, right:-1): "))
     theta = min(int(input("Enter the steering wheel angle in degrees: ")),
                 max_steering_wheel_angle)
-    theta = np.linspace(0, theta*np.pi/180, int(frame_count/20))
+    theta = np.linspace(0, theta*np.pi/180+0.1, int(frame_count/20))
     turning_radius = wheel_base/(np.tan(theta/steering_ratio+1e-9))/scaling_factor**2
 
     i=0
@@ -52,10 +52,11 @@ if __name__ == "__main__":
             radius1 = frame_width/2 + track_width/2 + turning_radius[i]
             radius2 = frame_width/2 - track_width/2 + turning_radius[i]
 
-            # Projecting the guidelines on the frame
-            frame = transform_3d_to_2d(frame, center, radius1, radius2, scaling_factor, heading)
+        # Projecting the guidelines on the frame
+        transformed_frame = transform_3d_to_2d(frame, center, radius1,
+                                               radius2, scaling_factor, heading)
 
-            # Displaying the frame
-            cv2.imshow("Rear view camera simulation with guidelines", frame)
-            cv2.waitKey(1)
-            i += 1
+        # Displaying the frame
+        cv2.imshow("Rear view camera simulation with guidelines", transformed_frame)
+        cv2.waitKey(10)
+        i += 1
