@@ -1,0 +1,8 @@
+# Update the following as required
+video_path: "videos/VID20231125124829.avi"
+wheel_base: 3500  # (in mm)
+track_width: 1500  # (in mm)
+steering_ratio: 12
+max_steering_wheel_angle: 180  # Absolute value (in deg)
+max_road_wheel_angle: 30  # Absolute value (in deg)
+scaling_factor: 3  # Focal length factor for 3d to 2d conversion
