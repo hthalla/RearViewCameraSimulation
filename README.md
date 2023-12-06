@@ -30,11 +30,5 @@ sim.py: This is the main file which performs the simulation by taking the follow
 ### Output:
 The outut is the simulation window with the guidelines changing according to the steering wheel angle.
 
-### Dependencies:
-* highway_env
-* gymnasium
-* scipy
-* opencv
-
 ### Note:
 Object detection task is WIP.
