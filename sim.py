@@ -10,7 +10,7 @@ import numpy as np
 
 from include.parser import parse_video
 from include.parser import parse_yaml_file
-from include.transform import transform_3d_to_2d
+from include.transform import max_transform_3d_to_2d, transform_3d_to_2d
 
 
 YAML_FILE_PATH = "config/params.yaml"  # Config file path
@@ -37,6 +37,10 @@ if __name__ == "__main__":
                 max_steering_wheel_angle)
     theta = np.linspace(0, theta*np.pi/180+0.1, int(frame_count/20))
     turning_radius = wheel_base/(np.tan(theta/steering_ratio+1e-9))/scaling_factor**2
+    max_turning_radius = wheel_base/(np.tan(max_steering_wheel_angle*(np.pi/180)/
+                                            steering_ratio+1e-9))/scaling_factor**2
+    max_center = (frame_width + max_turning_radius, frame_height)
+    max_turning_radius = frame_width/2 + track_width/2 + max_turning_radius
 
     i=0
     while True:
@@ -44,6 +48,10 @@ if __name__ == "__main__":
         ret, frame = capture.read()
         if not ret:
             break
+
+        # Projecting the max guidelines on the frame
+        max_transformed_frame = max_transform_3d_to_2d(frame, max_center, max_turning_radius,
+                                                       scaling_factor)
 
         if i < int(frame_count/20):
             # Dynamic turning radius calculation of the inner and
@@ -53,7 +61,7 @@ if __name__ == "__main__":
             radius2 = frame_width/2 - track_width/2 + turning_radius[i]
 
         # Projecting the guidelines on the frame
-        transformed_frame = transform_3d_to_2d(frame, center, radius1,
+        transformed_frame = transform_3d_to_2d(max_transformed_frame, center, radius1,
                                                radius2, scaling_factor, heading)
 
         # Displaying the frame
