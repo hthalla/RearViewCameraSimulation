@@ -7,6 +7,7 @@ Description: This is the main file that simulates the rear view camera display w
 """
 import cv2
 import numpy as np
+from ultralytics import YOLO
 
 from include.parser import parse_video
 from include.parser import parse_yaml_file
@@ -23,6 +24,7 @@ if __name__ == "__main__":
     wheel_base = int(params["wheel_base"])
     steering_ratio = int(params["steering_ratio"])
     max_steering_wheel_angle = int(params["max_steering_wheel_angle"])
+    model_path = params["yolov8_weights"]
 
     # Parsing the video and its parameters.
     video_path = params["video_path"]
@@ -41,6 +43,7 @@ if __name__ == "__main__":
                                             steering_ratio+1e-9))/scaling_factor**2
     max_center = (frame_width + max_turning_radius, frame_height)
     max_turning_radius = frame_width/2 + track_width/2 + max_turning_radius
+    model = YOLO(model_path)
 
     i=0
     while True:
@@ -49,9 +52,12 @@ if __name__ == "__main__":
         if not ret:
             break
 
+        # Objects detection
+        predicted_frame = model(frame, verbose=False)[0].plot()
+
         # Projecting the max guidelines on the frame
-        max_transformed_frame = max_transform_3d_to_2d(frame, max_center, max_turning_radius,
-                                                       scaling_factor)
+        max_transformed_frame = max_transform_3d_to_2d(predicted_frame, max_center,
+                                                       max_turning_radius, scaling_factor)
 
         if i < int(frame_count/20):
             # Dynamic turning radius calculation of the inner and

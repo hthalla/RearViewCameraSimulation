@@ -1,5 +1,6 @@
 # Update the following as required
-video_path: "videos/VID20231125124829.avi"
+video_path: "videos/VID20231208111114.avi"
+yolov8_weights: "runs/detect/train/weights/best.pt"
 wheel_base: 3500  # (in mm)
 track_width: 1500  # (in mm)
 steering_ratio: 12
